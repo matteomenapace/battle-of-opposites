@@ -1,6 +1,6 @@
 # HTML5 Game Jam with CraftyJS
 
-This is a starter pack for 'shooter' games like Space Invaders.
+This is a starter pack for 'shooter' games like Space Invaders. You can play it [here](http://mindcandy.github.com/crafty-starter-game-shooter/).
 
 To run this project, open index.html in a web browser.
 

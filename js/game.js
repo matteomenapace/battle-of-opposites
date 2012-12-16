@@ -130,35 +130,59 @@
     // Limit movement to within the viewport
     Crafty.c('ViewportBounded', 
     {
-        init: function() {
-            this.requires('2D');
+        init: function() 
+        {
+            this.requires('2D')
+
+            this.bind('Moved', function(oldPosition) 
+            {
+                this.checkOutOfBounds(oldPosition)
+            })    
         },
+
         // this must be called when the element is moved event callback
-        checkOutOfBounds: function(oldPosition) {
-            if(!this.within(0, 0, Crafty.viewport.width, Crafty.viewport.height)) {
+        checkOutOfBounds: function(oldPosition) 
+        {
+            if(!this.within(0, 0, Crafty.viewport.width, Crafty.viewport.height)) 
+            {
                 this.attr({x: oldPosition.x, y: oldPosition.y});
             }
         }
     })
 
+    Crafty.c('Solid',
+    {
+        init: function() 
+        { 
+            this.requires('2D')
+
+            this.bind('Moved', function(oldPosition) 
+            {
+                this.checkHit(oldPosition)
+            }) 
+        },
+
+        checkHit: function(oldPosition)
+        {
+            if (this.hit('Solid'))
+            {
+                this.attr({x: oldPosition.x, y:oldPosition.y})
+                if (this.data) Crafty.trigger('PlayerCollision', this.data)
+                // console.log('Solid is hitting')
+            }
+        } 
+    })
+
     // Player component    
     Crafty.c('Player', 
-    {        
+    {   
+        data: {},
+
         init: function() 
         {  
             // this.requires('Renderable, Fourway, Collision, ViewportBounded, SpriteAnimation, Directions')
-            this.requires('Collision, ViewportBounded, Multiway')
+            this.requires('2D, Collision, ViewportBounded, Multiway, Solid')
                 .collision()
-                // .attr({x: 64, y: 64})
-                // animate the ship - set up animation, then trigger it
-                // .animate('fly', 0, 0, 1)
-                // .animate('fly', 5, -1)
-
-            // bind our movement handler to keep us within the Viewport
-            this.bind('Moved', function(oldPosition) 
-            {
-                this.checkOutOfBounds(oldPosition)
-            })    
         },
 
         initControls: function(config)
@@ -178,9 +202,9 @@
                     // fire bullet
                     Crafty.e("Bullet").attr({x: this.x + 5, y: this.y});
                 }
-            })*/
+            })
 
-            /*this.bind('NewDirection', function(direction) 
+            this.bind('NewDirection', function(direction) 
             {
                 this.checkDirection(direction)
             })*/
@@ -208,12 +232,22 @@
             this.attr({x: position.x, y: position.y})
 
             return this
+        },
+
+        setData: function(data)
+        {
+            this.data = data
+
+            return this
         }
     })
 
     Crafty.c('GameLogic', 
     {
         timer: 0,
+
+        _hasCollision: false,
+
 
         switchTypes:
         [
@@ -224,9 +258,50 @@
         init: function() 
         {
             this.requires('Delay')
+            this.checkPlayers()
             this.setMission()
             this.reset()
-            // this.tick()
+            this.tick()
+        },
+
+        checkPlayers: function()
+        {
+            // var self = this
+            // Crafty.bind('PlayerCollision', this.onPlayerCollision)
+            this.bind('PlayerCollision', this.onPlayerCollision)
+            /*Crafty.bind('PlayerCollision', function(data)
+            {
+                this.checkCollision(data)
+
+                // console.log('PlayerCollision')
+                // console.log(data)
+            })*/
+        },
+
+        onPlayerCollision: function(data)
+        {
+            this.unbind('PlayerCollision', this.onPlayerCollision)
+            // Crafty.unbind('PlayerCollision', this.onPlayerCollision)
+            // Crafty.unbind('PlayerCollision')
+
+            //  _hasCollision
+
+            // console.log('onPlayerCollision')
+            // console.log(data)
+
+            var message = ''
+            Crafty('Player').each(function () 
+            {
+                var verb = (this.data.status == 'chaser') ? 'wins' : 'loses'
+                if (verb == 'wins') message = this.data.name + ' ' + verb + '.'
+            })
+
+            
+            console.log(message)
+
+            $('#gameOverModal h3').html(message)
+            $('#gameOverModal').modal('show')
+
         },
         
         tick: function() 
@@ -248,7 +323,7 @@
 
         reset: function()
         {
-            this.timer = Crafty.math.randomInt(2,3)
+            this.timer = Crafty.math.randomInt(8,12)
         },
 
         switch: function()
@@ -361,14 +436,14 @@
         // create a scoreboard
         // Crafty.e('Score')
 
-        Crafty.e('GameLogic')
-        // Crafty.e('GameOver')
+        
 
         //create players...
 
         // left
         var playerLeft = battle.players[0]
         Crafty.e('Player')
+            .setData(playerLeft)
             .initControls({speed:config.player.speed, controls:{W: -90, S: 90, D: 0, A: 180}})
             .setCharacter(playerLeft.src, {w:config.player.width, h:config.player.height})
             .setPosition({x:0, y:0})
@@ -376,6 +451,7 @@
         // right
         var playerRight = battle.players[1]
         Crafty.e('Player')
+            .setData(playerRight)
             .initControls({speed:config.player.speed, controls:{UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}})
             .setCharacter(playerRight.src, {w:config.player.width, h:config.player.height})
             .setPosition({x:Crafty.viewport.width - config.player.width, y:Crafty.viewport.height - config.player.height}) 
@@ -385,6 +461,10 @@
         {
             Crafty.e('Target')
         }*/
+
+
+        Crafty.e('GameLogic')
+        // Crafty.e('GameOver')
     }
 
 

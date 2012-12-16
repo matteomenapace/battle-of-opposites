@@ -1,34 +1,120 @@
-#container 
+/*#container 
 {
-    margin: auto;
-    width: 800px;
-    text-align: center;
-    /*font-family: Helvetica, Arial, sans-serif;*/
+	margin: auto;
+	width: 800px;
+	text-align: center;
+}*/
+/* line 9, ../sass/main.scss */
+#cr-stage {
+  padding: 0;
 }
 
-#cr-stage 
-{
-    border: 1px solid #eee;
+/* line 15, ../sass/main.scss */
+img.raw {
+  max-width: 300px;
+  max-height: 300px;
 }
 
-.left
-{
-	float: left;
+/* line 21, ../sass/main.scss */
+img.preview {
+  width: 64px;
+  height: 64px;
 }
 
-.right
-{
-	float: right;
+/* line 29, ../sass/main.scss */
+.page-header .lead {
+  line-height: 40px;
 }
 
-img.raw 
-{
-	max-width: 300px;
-	max-height: 300px;
+/* line 35, ../sass/main.scss */
+.jumbotron {
+  margin: 60px 0;
+  text-align: center;
+}
+/* line 40, ../sass/main.scss */
+.jumbotron h2 {
+  font-size: 60px;
+  line-height: 80px;
+  margin-bottom: 40px;
+  margin-top: 0;
 }
 
-img.preview
-{
-	width: 64px;
-	height: 64px;
+/* line 49, ../sass/main.scss */
+.main-btn {
+  margin-top: 20px;
+  font-size: 30px;
+  padding: 20px 30px;
+  font-weight: 200;
+}
+
+/* line 59, ../sass/main.scss */
+#optionsScreen .option {
+  width: 45%;
+  margin-top: 28px;
+}
+/* line 66, ../sass/main.scss */
+#optionsScreen .option .btn-group,
+#optionsScreen .option .btn,
+#optionsScreen .option ul {
+  width: 100%;
+}
+/* line 70, ../sass/main.scss */
+#optionsScreen .option h3 {
+  margin-top: 0;
+}
+
+/* line 77, ../sass/main.scss */
+.add-file-btn {
+  position: relative;
+  overflow: hidden;
+}
+/* line 82, ../sass/main.scss */
+.add-file-btn input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  border: solid transparent;
+  border-width: 0 0 100px 200px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transform: translate(-300px, 0) scale(4);
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* line 98, ../sass/main.scss */
+.controls {
+  position: relative;
+  width: 87px;
+  margin: 20px auto;
+}
+/* line 105, ../sass/main.scss */
+.controls .up, .controls .down, .controls .left, .controls .right {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 29px;
+}
+/* line 113, ../sass/main.scss */
+.controls .up {
+  left: 29px;
+  top: 0;
+}
+/* line 118, ../sass/main.scss */
+.controls .down {
+  left: 29px;
+}
+/* line 122, ../sass/main.scss */
+.controls .left {
+  left: 0;
+}
+/* line 126, ../sass/main.scss */
+.controls .right {
+  left: 58px;
+}
+
+/* line 132, ../sass/main.scss */
+#gameScreen {
+  text-align: center;
 }

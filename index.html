@@ -5,7 +5,7 @@
 	<title>Battle of Opposites (WT)</title>
 	
 	<link rel="stylesheet" href="style/bootstrap.min.css">
-	<link rel="stylesheet" href="style/bootstrap-responsive.min.css">
+	<!-- <link rel="stylesheet" href="style/bootstrap-responsive.min.css"> -->
 	<link rel="stylesheet" type="text/css" href="style/main.css"></link>
 	
 	<script src="js/vendor/crafty-0.5.3-patch.js"></script>
@@ -18,33 +18,130 @@
 </head>
 
 <body>
-	<div id="container">
-		<h1>Battle of Opposites (WT)</h1>
-		<p>A game about roles and identity crises</p>
-		<div id="cr-stage"></div>
-		<div>
-			<div class="left">Player A moves ← ↑ ↓ → </div>
-			<div class="right">Player B moves A W S D</div>
-		</div>    
+
+	<div class="container">
+		<div class="page-header">     	
+			  
+			<div class="lead pull-right">A <a href="https://github.com/matteomenapace/battle-of-opposites">hackable game</a></div>
+			<h1>Battle of Opposites</h1>	
+		</div>
+		
+		<div id="introScreen" class="jumbotron">
+			<h2>Games are simple.</h2>
+			<p class="lead">They are battles of goodies vs baddies, friends vs enemies, winners vs losers.</p> 
+			<p class="lead">Just like life, history and wars.</p>
+			<a id="step2Btn" class="btn btn-large btn-success main-btn">Start battling</a>
+		</div>
+
+		<div id="optionsScreen" class="hide jumbotron">
+
+			<h2>In this game you can't play alone.</h2>
+			<p class="lead">Just like in life, history and wars.</p>
+			<p class="lead">So find another player and pick your sides!</p> 
+
+			<div class="option btn-toolbar pull-left">
+			  <div id="pairsGroup" class="btn-group">
+				<button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><span class="cta">Choose a pair of opposites</span> <span class="caret pull-right"></span></button>
+				<ul class="dropdown-menu">
+				  <li><a class="pairs-btn">Fox vs Duck</a></li>
+				  <li><a class="pairs-btn">Police vs Criminal</a></li>
+				  <li><a class="pairs-btn">Gay vs Straight</a></li>
+				</ul>
+			  </div>
+			</div>
+
+			<div class="option pull-right">	
+				<button class="btn btn-large disabled">Hack your own duality </button>
+			</div>	
+
+			<h2>or</h2>
+
+			<div id="playersAvatars" class="hide">
+				<div class="option pull-left">
+					<h3>Player Left</h3>
+					<img class="avatar img-polaroid" />
+					<div class="controls">
+						<span class="left img-polaroid">A</span>
+						<span class="up img-polaroid">W</span>
+						<span class="down img-polaroid">S</span>
+						<span class="right img-polaroid">D</span>
+					</div>
+				</div>	
+				<div class="option pull-right">
+					<h3>Player Right</h3>
+					<img class="avatar img-polaroid" />
+					<div class="controls">
+						<span class="left img-polaroid">←</span>
+						<span class="up img-polaroid">↑</span>
+						<span class="down img-polaroid">↓</span>
+						<span class="right img-polaroid">→</span>
+					</div>
+				</div>	
+				<h2>vs</h2>
+			</div>
+			
+			<a id="step3Btn" class="btn btn-large btn-success disabled main-btn">Start this game</a>
+		</div>	
+		
+		<div id="gameScreen" class="hide">
+
+			<h1><span class="pull-left chaser">Player Left</span> chases <span class="pull-right chased">Player Right</span></h1>
+			
+			<div id="cr-stage" class="img-polaroid"></div>
+
+			<div id="playersControls">
+				<div class="pull-left">
+					<h3>Player Left</h3>
+					<img class="avatar img-polaroid" />
+					<div class="controls">
+						<span class="left img-polaroid">A</span>
+						<span class="up img-polaroid">W</span>
+						<span class="down img-polaroid">S</span>
+						<span class="right img-polaroid">D</span>
+					</div>
+				</div>
+
+				<div class="pull-right">
+					<h3>Player Right</h3>
+					<img class="avatar img-polaroid" />
+					<div class="controls">
+						<span class="left img-polaroid">←</span>
+						<span class="up img-polaroid">↑</span>
+						<span class="down img-polaroid">↓</span>
+						<span class="right img-polaroid">→</span>
+					</div>
+				</div>
+			</div> 
+
+			<a id="" class="btn btn-large btn-success disabled main-btn">Start again</a>
+
+		</div>	
+
 	</div>
 
-<div class='modal hide fade' id='modal-picture'>
-	<div class='modal-header'>
-		<button type='button' class='close' data-dismiss='modal'>×</button>
-		<h3>Craft your character</h3>
-	</div>
-	<div class='modal-body'>
-		<div class="input-append">
-			<input id="imageUrl" class="span6" type='url' placeholder='Paste an image URL here (eg: http://example.com/fox.jpg)' autofocus>
-			<button id="imageBtn" class="btn" type="button">Go!</button>
+	<div class='modal hide fade' id='pictureModal'>
+		<div class='modal-header'>
+			<button type='button' class='close' data-dismiss='modal'>×</button>
+			<h3>Craft your character</h3>
 		</div>
-		<img class='raw' src=''/>
-		<img class='preview hide'/>  
+		<div class='modal-body'>
+			<div class="input-append">
+				<div class="avatar circle-l"><img class="avatar fade"  src=""  /> </div>
+			<span class="btn add-file-btn hidden-phone">
+				<span> Add picture</span>
+				<input type="file" name="file" id="file">	
+			</span>
+
+				<!-- <input id="imageUrl" class="span6" type='url' placeholder='Paste an image URL here (eg: http://example.com/fox.jpg)' autofocus>
+				<button id="imageBtn" class="btn" type="button">Go!</button> -->
+			</div>
+			<img class='raw' src=''/>
+			<img class='preview hide'/>  
+		</div>
+		<div class='modal-footer'>
+			<a class='btn upload-file-btn btn-primary disabled'>Done</a>
+		</div>
 	</div>
-	<div class='modal-footer'>
-		<a class='btn upload-file-btn btn-primary disabled'>Done</a>
-	</div>
-</div>
 
 
 </body>

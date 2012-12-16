@@ -1,11 +1,16 @@
-# HTML5 Game Jam with CraftyJS
+# Battle of Opposites
 
-This is a starter pack for 'shooter' games like Space Invaders. You can play it [here](http://mindcandy.github.com/crafty-starter-game-shooter/).
+### A hackable game about roles and identity crises
 
-To run this project, open index.html in a web browser.
+Goodies vs baddies, friends vs enemies, winners vs losers: games (and life, history, wars) are simple.
 
-Alternatively you can execute the run-server.sh script and navigate to [http://localhost:8000](http://localhost:8000)  (Requires Python and bash)
+In this game **you can't play alone**, so:
 
+1. find another player
+2. pick your sides (or create your *pair of opposites*)
+3. start battling!
 
-Open sourced as part of the Mozilla Festival 2012's session '[HTML5 Mash Up with Mind Candy](http://lanyrd.com/2012/mozilla-festival/szcbt/)'
-For the slides to that sessions see [here](http://www.rvl.io/markltbaker/mashupwithmindcandy)
+---------
+
+This is the hackable source code. You can play the game [here](http://mindcandy.github.com/crafty-starter-game-shooter/).
+

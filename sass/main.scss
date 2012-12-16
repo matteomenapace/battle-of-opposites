@@ -131,6 +131,19 @@ img.preview
 #gameScreen
 {
 	text-align: center;
+	position: relative;
+
+	#timer
+	{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 10px;
+		font-size: 500px;
+		line-height: 1;
+		height: 0;
+		opacity: 0.2;
+	}
 }
 
 

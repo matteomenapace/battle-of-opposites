@@ -12,5 +12,5 @@ In this game **you can't play alone**, so:
 
 ---------
 
-This is the hackable source code. You can play the game [here](http://mindcandy.github.com/crafty-starter-game-shooter/).
+This is the hackable source code. You can play the game [here](http://matteomenapace.github.com/battle-of-opposites/).
 

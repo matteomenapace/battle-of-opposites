@@ -21,17 +21,21 @@ img.preview {
   height: 64px;
 }
 
-/* line 29, ../sass/main.scss */
+/* line 27, ../sass/main.scss */
+.page-header {
+  padding-bottom: 0;
+}
+/* line 31, ../sass/main.scss */
 .page-header .lead {
   line-height: 40px;
 }
 
-/* line 35, ../sass/main.scss */
+/* line 37, ../sass/main.scss */
 .jumbotron {
-  margin: 60px 0;
+  margin: 40px 0;
   text-align: center;
 }
-/* line 40, ../sass/main.scss */
+/* line 42, ../sass/main.scss */
 .jumbotron h2 {
   font-size: 60px;
   line-height: 80px;
@@ -39,7 +43,7 @@ img.preview {
   margin-top: 0;
 }
 
-/* line 49, ../sass/main.scss */
+/* line 51, ../sass/main.scss */
 .main-btn {
   margin-top: 20px;
   font-size: 30px;
@@ -47,28 +51,32 @@ img.preview {
   font-weight: 200;
 }
 
-/* line 59, ../sass/main.scss */
+/* line 61, ../sass/main.scss */
 #optionsScreen .option {
   width: 45%;
   margin-top: 28px;
 }
-/* line 66, ../sass/main.scss */
+/* line 68, ../sass/main.scss */
 #optionsScreen .option .btn-group,
 #optionsScreen .option .btn,
 #optionsScreen .option ul {
   width: 100%;
 }
-/* line 70, ../sass/main.scss */
+/* line 72, ../sass/main.scss */
 #optionsScreen .option h3 {
   margin-top: 0;
 }
+/* line 76, ../sass/main.scss */
+#optionsScreen #step3Btn {
+  margin-top: -20px;
+}
 
-/* line 77, ../sass/main.scss */
+/* line 82, ../sass/main.scss */
 .add-file-btn {
   position: relative;
   overflow: hidden;
 }
-/* line 82, ../sass/main.scss */
+/* line 87, ../sass/main.scss */
 .add-file-btn input {
   position: absolute;
   top: 0;
@@ -83,50 +91,71 @@ img.preview {
   cursor: pointer;
 }
 
-/* line 98, ../sass/main.scss */
+/* line 103, ../sass/main.scss */
 .controls {
   position: relative;
   width: 87px;
   margin: 20px auto;
+  height: 59px;
 }
-/* line 105, ../sass/main.scss */
+/* line 111, ../sass/main.scss */
 .controls .up, .controls .down, .controls .left, .controls .right {
   width: 20px;
   height: 20px;
   position: absolute;
   top: 29px;
 }
-/* line 113, ../sass/main.scss */
+/* line 119, ../sass/main.scss */
 .controls .up {
   left: 29px;
   top: 0;
 }
-/* line 118, ../sass/main.scss */
+/* line 124, ../sass/main.scss */
 .controls .down {
   left: 29px;
 }
-/* line 122, ../sass/main.scss */
+/* line 128, ../sass/main.scss */
 .controls .left {
   left: 0;
 }
-/* line 126, ../sass/main.scss */
+/* line 132, ../sass/main.scss */
 .controls .right {
   left: 58px;
 }
 
-/* line 132, ../sass/main.scss */
+/* line 138, ../sass/main.scss */
 #gameScreen {
   text-align: center;
   position: relative;
+  margin-top: -20px;
 }
-/* line 137, ../sass/main.scss */
+/* line 144, ../sass/main.scss */
+#gameScreen h1 {
+  background-color: #eee;
+  padding: 10px;
+}
+/* line 150, ../sass/main.scss */
+#gameScreen #playersControls {
+  margin-top: 10px;
+}
+/* line 154, ../sass/main.scss */
+#gameScreen #playersControls .pull-left, #gameScreen #playersControls .pull-right {
+  background-color: #eee;
+  min-width: 200px;
+}
+/* line 161, ../sass/main.scss */
 #gameScreen #timer {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
-  top: 10px;
+  top: 30px;
   font-size: 500px;
   line-height: 1;
   height: 0;
   opacity: 0.2;
+}
+/* line 174, ../sass/main.scss */
+#gameScreen .main-btn {
+  margin-top: 60px;
 }

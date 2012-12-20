@@ -25,6 +25,8 @@ img.preview
 
 .page-header 
 {
+	padding-bottom: 0;
+
 	.lead
 	{
 		line-height: 40px;
@@ -33,7 +35,7 @@ img.preview
 
 .jumbotron 
 {
-	margin: 60px 0;
+	margin: 40px 0;
 	text-align: center;
 
 	h2 
@@ -70,7 +72,10 @@ img.preview
 		h3 { margin-top: 0;}
 	}
 
-
+	#step3Btn
+	{
+		margin-top: -20px;
+	}
 }
 
 .add-file-btn 
@@ -100,6 +105,7 @@ img.preview
 	// margin-top: 20px;
 	width: 87px;
 	margin: 20px auto;
+	height: 59px;
 
 	.up, .down, .left, .right
 	{
@@ -132,17 +138,41 @@ img.preview
 {
 	text-align: center;
 	position: relative;
+	margin-top: -20px;
+
+	h1
+	{
+		background-color: #eee;
+		padding: 10px;
+	}
+
+	#playersControls
+	{
+		margin-top: 10px;
+
+		.pull-left, .pull-right
+		{
+			background-color: #eee;
+			min-width: 200px;
+		}
+	}
 
 	#timer
 	{
+		display: none;
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: 10px;
+		top: 30px;
 		font-size: 500px;
 		line-height: 1;
 		height: 0;
 		opacity: 0.2;
+	}
+
+	.main-btn
+	{
+		margin-top: 60px;
 	}
 }
 

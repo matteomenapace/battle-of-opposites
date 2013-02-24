@@ -13,14 +13,20 @@
 
 img.raw 
 {
-	max-width: 300px;
-	max-height: 300px;
+	max-width: 256px;
+	max-height: 256px;
+	margin-top: 12px;
+	margin-left: 12px;
+	// opacity: 0.6;
 }
 
 img.preview
 {
 	width: 64px;
 	height: 64px;
+	display: block;
+	float: left;
+	margin-top: 12px;
 }
 
 .page-header 
@@ -78,10 +84,16 @@ img.preview
 	}
 }
 
+#characterName
+{
+	width: 516px;
+}
+
 .add-file-btn 
 {
   position: relative;
   overflow: hidden;
+  display: block;
   
 	input 
 	{
@@ -176,4 +188,16 @@ img.preview
 	}
 }
 
-
+.btn
+{
+	.disabled
+	{
+		opacity: 0.4;
+	}
+	.caret 
+	{
+	    position: absolute;
+	    right: 15px;
+	    top: 10px;
+	}	
+}

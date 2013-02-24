@@ -58,16 +58,20 @@
 		step3Btn,
 		optionsScreen,
 		pairsGroup,
+		hackPairBtn,
 		playersAvatars,
-		modalPicture,
-		imageBtn, 
-		rawImage,
-		previewImage,
+		characterModal,
+		characterNameInput,
+		characterFileInput,
+		characterRawImage,
+		characterCropImage,
+		characterBtn,
 		gameScreen,
 		gameMission,
 		restartGameBtn,
 		startAgainBtn
 
+		
 
 	// kick off when the web page is ready
 	$(document).ready(function() 
@@ -79,8 +83,16 @@
 
 		optionsScreen = $('#optionsScreen')
 		pairsGroup = $('#pairsGroup')
+		hackPairBtn = $('#hackPairBtn')
 		playersAvatars = $('#playersAvatars')
 		step3Btn = $('#step3Btn')
+
+		characterModal = $('#characterModal')
+		characterNameInput = $('#characterName')
+		characterFileInput = $('#characterFile')
+		characterRawImage = $('#characterRaw')
+		characterCropImage = $('#characterCrop')
+		characterBtn = $('#characterBtn')
 
 		gameScreen = $('#gameScreen')
 		gameMission = $('#gameScreen h1')
@@ -96,7 +108,11 @@
 		{
 			if (!$(this).hasClass('disabled')) step3()
 		})
-		
+
+		hackPairBtn.on('click', startHackingPair)
+		characterBtn.on('click', onCharacterBtnClick)
+		characterFileInput.on('change', onFileSelected)
+		characterNameInput.on('keyup', checkCharacterBtn)
 
 		startAgainBtn.on('click', startAgain)
 		restartGameBtn.on('click', restartGame)
@@ -109,7 +125,6 @@
 	function step1() // intro
 	{
 		// console.log('step1')
-
 		// nothing to do here, players read and move on..
 	}
 	
@@ -119,13 +134,154 @@
 
 		introScreen.hide()
 		gameScreen.hide()
-		optionsScreen.show()
+		optionsScreen.show()		
+	}
 
-		// modalPicture = $('#pictureModal')
-		// imageBtn = $('#imageBtn')
-		// rawImage = $('img.raw')
-		// previewImage = $('img.preview')
-		// imageUrl = $('#imageUrl')		
+	function startHackingPair()
+	{
+		battle.title = ''
+		battle.players = []
+
+		resetCharacterModal('Start with the LEFT player')
+		showCharacterModal()		
+	}
+
+	function resetCharacterModal(title)
+	{
+		// console.log('resetCharacterModal ' + title)
+
+		characterNameInput.val('').focus()
+
+		// characterCropImage.attr('src', null)
+		characterCropImage.removeAttr('src')
+		characterCropImage.css('visibility','hidden')
+			
+		// characterRawImage.attr('src', '')
+		characterRawImage.removeAttr('src')
+		characterRawImage.css('visibility','hidden')
+			
+		removeCanvas()
+
+		$('#characterModal h3').html(title)
+
+		checkCharacterBtn()
+	}
+
+	function removeCanvas()
+	{
+		var canvas = $('#characterModal .crop-canvas')
+		if (canvas) canvas.remove()
+	}
+
+	function showCharacterModal()
+	{
+		characterModal.modal('show')
+	}
+
+	function hideCharacterModal()
+	{
+		characterModal.modal('hide')
+	}
+
+	function onCharacterBtnClick()
+	{
+		if (characterBtn.hasClass('disabled')) return
+
+		var length = battle.players.length
+		// console.log('onCharacterBtnClick ' + length)
+
+		var player = getHackedCharacter()
+
+		if (length == 0)
+		{
+			// console.log('no players, set the left one')
+
+			battle.players.push(player)
+
+			battle.title = player.name + ' vs '
+
+			resetCharacterModal('Now craft the RIGHT player')
+		}	
+		else if (length == 1)
+		{
+			// console.log('left player exists, set the right one')
+
+			battle.players.push(player)
+
+			battle.title += player.name
+
+			hideCharacterModal()
+			showTitle()
+			showAvatars()
+			enableStep3Button()
+		}	
+	}
+
+	function getHackedCharacter()
+	{
+		var player = {}
+		player.name = characterNameInput.val()
+		player.src = characterCropImage.attr('src')
+		return player
+	}
+
+	function checkCharacterBtn()
+	{
+		var disabled = false
+		var name = characterNameInput.val()
+		var src = characterRawImage.attr('src')
+		if (src == '') disabled = true
+		if (name == '') disabled = true 
+
+		// console.log('checkCharacterBtn disabled? ' + disabled)
+
+		if (disabled) characterBtn.addClass('disabled')
+		else characterBtn.removeClass('disabled')
+
+		if (battle.players.length == 0) characterBtn.html('Next')
+		else if (battle.players.length == 1) characterBtn.html('Done')
+	}
+
+	function onFileSelected(event)
+	{
+		// console.log('onFileSelected')
+		
+		var files = event.target.files || event.dataTransfer.files
+		var file = files[0]
+
+		// console.log(file)
+		
+		previewFile(file)
+	}	
+
+	function previewFile(file)
+	{
+		// console.log('previewFile')
+			
+		if (file.type.indexOf('image') == 0) 
+		{
+			removeCanvas()
+
+			var fileReader = new FileReader()
+			fileReader.onload = function(event) 
+			{
+				characterRawImage.attr('src', event.target.result)
+				characterRawImage.css('visibility','visible')
+
+				characterRawImage.crop(
+				{
+					preview: 'img#characterCrop',
+					size: {w: 64, h: 64},
+					ratio: 1,
+					setSelect: 'center',
+					log: true
+				})	
+				characterCropImage.css('visibility','visible')
+
+				checkCharacterBtn()
+			}
+			fileReader.readAsDataURL(file)
+		}
 	}
 
 	function pairChosen(event)
@@ -243,10 +399,6 @@
 	
 	Game.prototype.playgroundScene = function() 
 	{
-		// create a scoreboard
-		// Crafty.e('Score')
-
-
 		//create players...
 
 		// left
@@ -262,15 +414,6 @@
 			.setData(playerRight)
 			.setCharacter(playerRight.src, {w:config.player.width, h:config.player.height})
 			.setPosition({x:Crafty.viewport.width - config.player.width, y:Crafty.viewport.height - config.player.height}) 
-		
-		// create some junk to avoid
-		/*for (i = 0; i < 5; i++) 
-		{
-			Crafty.e('Target')
-		}*/
-
-
-		// Crafty.e('GameLogic').start()
 	}
 
 // CRAFTY COMPONENTS
@@ -342,22 +485,6 @@
 
 			// set up multiway controller
 			this.multiway(config.speed, config.controls)
-
-			// also react to the SPACE key being pressed
-			/*.requires('Keyboard')
-			.bind('KeyDown', function(e) 
-			{
-				if (e.key === Crafty.keys.SPACE) 
-				{
-					// fire bullet
-					Crafty.e("Bullet").attr({x: this.x + 5, y: this.y});
-				}
-			})
-
-			this.bind('NewDirection', function(direction) 
-			{
-				this.checkDirection(direction)
-			})*/
 
 			return this
 		},
@@ -443,11 +570,15 @@
 
 		onPlayerCollision: function(data)
 		{
-			this.unbind('PlayerCollision', this.onPlayerCollision)
-
-			this.gameOver()
+			// this.unbind('PlayerCollision', this.onPlayerCollision)
 
 			// console.log('onPlayerCollision')
+
+			if (!this._on) return
+				
+			this.gameOver()
+
+			
 			// console.log(data)
 		},
 		
@@ -494,7 +625,7 @@
 				if (verb == 'wins') title = this.data.name + ' ' + verb + '!'
 			})
 	  
-			// console.log(message)
+			// console.log('gameOver ' + title)
 
 			$('#gameOverModal .modal-header h3').html(title)
 			$('#gameOverModal .modal-body').html(body)
@@ -581,227 +712,5 @@
 			return array
 		}
 	})
-
-	
-
-/*
-	
-	// A component to display the player's score
-	Crafty.c('Score', 
-	{
-		init: function() {
-			this.score = 0;
-			this.requires('2D, DOM, Text');
-			this._textGen = function() {
-				return "Score: " + this.score;
-			};
-			this.attr({w: 100, h: 20, x: 900, y: 0})
-				.text(this._textGen);
-		},
-		// increment the score - note how we call this.text() to change the text!
-		increment: function() {
-			this.score = this.score + 1
-			this.text(this._textGen)
-		}
-	})
-
-	// a renderable entity
-	Crafty.c('Renderable', 
-	{
-		init: function() {
-			// we're using DOM Spirtes
-			this.requires('2D, DOM');
-		},
-		// set which sprite to use -- should match up with a call to Crafty.sprite()
-		spriteName: function(name) {
-			this.requires(name);
-			return this; // so we can chain calls to setup functions
-		} 
-	})
-
-	// a component to fade out an entity over time
-	Crafty.c('FadeOut', 
-	{
-		init: function() {
-			this.requires('2D');
-
-			// the EnterFrame event is very useful for per-frame updates!
-			this.bind("EnterFrame", function() {
-				this.alpha = Math.max(this._alpha - this._fadeSpeed, 0.0);
-				if (this.alpha < 0.05) {
-					this.trigger('Faded');
-					// its practically invisible at this point, remove the object
-					this.destroy();
-				}
-			});
-		},
-		// set the speed of fading out - should be a small number e.g. 0.01
-		fadeOut: function(speed) {
-			// reminder: be careful to avoid name clashes...
-			this._fadeSpeed = speed;
-			return this; // so we can chain calls to setup functions
-		}
-	})
-
-	// rotate an entity continually
-	Crafty.c('Rotate', 
-	{
-		init: function() {
-			this.requires('2D');
-
-			// update rotation each frame
-			this.bind("EnterFrame", function() {
-				this.rotation = this._rotation + this._rotationSpeed;
-			});
-		},
-		// set speed of rotation in degrees per frame
-		rotate: function(speed) { 
-			// rotate about the center of the entity               
-			this.origin('center');
-			this._rotationSpeed = speed;
-			return this; // so we can chain calls to setup functions
-		},
-	})
-
-	// an exciting explosion!
-	Crafty.c('Explosion', 
-	{
-		init: function() {
-			// reuse some helpful components
-			this.requires('Renderable, FadeOut')
-				.spriteName('explosion' + Crafty.math.randomInt(1,2))
-				.fadeOut(0.1);
-		}
-	})
-
-	// a bullet, it shoots things
-	Crafty.c('Bullet', 
-	{
-		init: function() {
-			this.requires('Renderable, Collision, Delay, SpriteAnimation')
-				.spriteName('bullet')
-				.collision()
-				// set up animation from column 0, row 1 to column 1
-				.animate('fly', 0, 1, 1)
-				// start the animation
-				.animate('fly', 5, -1)                
-				// move left every frame, destroy bullet if its off the screen
-				.bind("EnterFrame", function() {
-					this.x += 10;
-					if (this.x > 1024) {
-						this.destroy();
-					}
-				})
-		}
-	})
-   
-	// targets to shoot at
-	Crafty.c('Target', 
-	{
-		init: function() {
-			this.requires('Renderable, Collision, Delay')
-				// choose a random enemy sprite to use
-				.spriteName('enemy' + Crafty.math.randomInt(1,2))
-				.collision()
-				// detect when we get hit by bullets
-				.onHit('Bullet', this._hitByBullet);
-			// choose a random position
-			this._randomlyPosition();            
-		},
-		// randomly position 
-		_randomlyPosition: function() {
-			this.attr({
-				x: Crafty.math.randomNumber(500, 800), 
-				y: Crafty.math.randomNumber(0,600-this.h)});
-		},
-		// we got hit!
-		_hitByBullet: function() {
-			// find the global 'Score' component
-			var score = Crafty('Score');
-			score.increment();
-
-			// show an explosion!
-			Crafty.e("Explosion").attr({x:this.x, y:this.y});
-
-			// hide this offscreen
-			this.x = -2000;
-
-			// reappear after a second in a new position
-			this.delay(this._randomlyPosition, 1000);
-		},
-	})
-	
-	// A loading scene -- pull in all the slow things here and create sprites
-	Game.prototype.loadingScene = function() 
-	{
-		var loading = Crafty.e('2D, Canvas, Text, Delay');
-		loading.attr({x: 512, y: 200, w: 100, h: 20});
-		loading.text('loading...');
-		
-		function onLoaded() {
-			// set up sprites
-			Crafty.sprite(64, 'img/shooter-sprites.png', {
-				player: [0, 0],
-				bullet: [0, 1],
-				enemy1: [0, 2],
-				enemy2: [1, 2],
-				explosion1: [0, 3],
-				explosion2: [1, 3]
-				});
-			
-			// jump to the main scene in half a second
-			loading.delay(function() {
-				Crafty.scene('main');
-			}, 500);
-		}
-		
-		function onProgress(progress) {
-			loading.text('loading... ' + progress.percent + '% complete');
-		}
-		
-		function onError() {
-			loading.text('could not load assets');
-		}
-		
-		Crafty.load([
-			// list of images to load
-			'img/shooter-sprites.png'
-		], 
-		onLoaded, onProgress, onError);
-		
-	};
-
-	// Player component    
-	Crafty.c('Player', {        
-		init: function() {           
-			this.requires('Renderable, Fourway, Collision, ViewportBounded, SpriteAnimation')
-				.spriteName('player')
-				.collision()
-				.attr({x: 64, y: 64})
-				// animate the ship - set up animation, then trigger it
-				.animate('fly', 0, 0, 1)
-				.animate('fly', 5, -1)
-				// set up fourway controller
-				.fourway(5)
-				// also react to the SPACE key being pressed
-				.requires('Keyboard')
-				.bind('KeyDown', function(e) {
-					if (e.key === Crafty.keys.SPACE) {
-						// fire bullet
-						Crafty.e("Bullet").attr({x: this.x + 5, y: this.y});
-					}
-				});
-
-			// bind our movement handler to keep us within the Viewport
-			this.bind('Moved', function(oldPosition) {
-				this.checkOutOfBounds(oldPosition);
-			});
-		},
-	});
-
-*/
-
-
-
 	
 })()
